@@ -8,6 +8,8 @@ import { Heart } from "lucide-react"
 import { saveJob } from "@/api/apiJobs"
 import useFetch from "@/hooks/use-fetch"
 import { useState, useEffect } from "react"
+import { deleteJob } from "@/api/apiJobs";
+import { BarLoader } from "react-spinners"
 
 const JobCard = ({
     job,
@@ -22,6 +24,15 @@ const JobCard = ({
 
     const { user } = useUser();
 
+     const { loading: loadingDeleteJob, fn: fnDeleteJob } = useFetch(deleteJob, {
+    job_id: job.id,
+  });
+
+    const handleDeleteJob = async () => {
+    await fnDeleteJob();
+    onJobAction();
+  };
+
     const handleSaveJob = async () => {
         await fnSavedJob({
             user_id : user.id,
@@ -32,19 +43,20 @@ const JobCard = ({
         onJobSaved();
     }
     
-    // useEffect(() => {
-    // if (savedJob !== undefined) {
-    //     const isNowSaved = savedJob && savedJob.length > 0;
-    //     setSaved(isNowSaved);
-    // }
-    // }, [savedJob]);
+    useEffect(() => {
+    if (savedJob !== undefined) setSaved(savedJob?.length > 0);
+}, [savedJob]);
 
   return <Card className="flex flex-col">
+    {loadingDeleteJob && (
+        <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
+      )}
     <CardHeader>
         <CardTitle className="flex justify-between font-bold">
           {job.title}  
             {isMyJob &&  (
-                <Trash2Icon fill="red" size={18} className="text-red-300 cursor-pointer"/>
+                <Trash2Icon fill="red" size={18} className="text-red-300 cursor-pointer"
+                onClick={handleDeleteJob}/>
             )}
         </CardTitle>
     </CardHeader>
