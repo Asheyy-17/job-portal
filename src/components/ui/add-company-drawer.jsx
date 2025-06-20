@@ -24,7 +24,8 @@ const schema = z.object({
     .refine(
       (file) =>
         file[0] &&
-        (file[0].type === "image/png" || file[0].type === "image/jpeg"),
+        file[0] &&
+      ["image/png", "image/jpeg", "image/svg+xml"].includes(file[0].type),
       {
         message: "Only Images are allowed",
       }
