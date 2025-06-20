@@ -62,7 +62,7 @@ const PostJob = () => {
   };
 
   useEffect(() => {
-    if (dataCreateJob?.length > 0) navigate("/jobs");
+    if (dataCreateJob?.length > 0) navigate("/jobs-listing");
   }, [loadingCreateJob]);
 
   const {

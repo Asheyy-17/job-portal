@@ -11,9 +11,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import faqs from '../data/faq.json'
+import { useUser } from "@clerk/clerk-react"
 
 
 const LandingPage = () => { 
+
+  const { user } = useUser();
+  const isRecruiter = user?.unsafeMetadata?.role?.toLowerCase() === "recruiter";
+
   return (
     <main className="flex flex-col gap-5 sm:gap-10 py-5 sm:py-10">
       <section className="text-center">
@@ -33,11 +38,19 @@ const LandingPage = () => {
             Find Job
           </Button>
         </Link>
-        <Link to="/post-job">
-          <Button variant="destructive" size="lg">
-            Post a Job
-          </Button>
-        </Link>
+        <Button
+          variant="destructive"
+          size="lg"
+          onClick={() => {
+            if (isRecruiter) {
+              window.location.href = "/post-job";
+            } else {
+              alert("Only recruiters can post a job. Please log in as a recruiter.");
+            }
+          }}
+        >
+          Post a Job
+        </Button>
       </div>
 
       {/* {Carousel} */}

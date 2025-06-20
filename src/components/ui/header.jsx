@@ -14,11 +14,17 @@ const Header = () => {
 
     const {user} = useUser();
 
+    const isRecruiter = user?.unsafeMetadata?.role?.toLowerCase() === "recruiter";
+
     useEffect(() => {
         if(search.get("sign-in")){
             setShowSignIn(true);
         }
     },[search])
+
+    useEffect(() => {
+        console.log("User Metadata:", user?.unsafeMetadata);
+    }, [user]);
 
     const handleOverLayClick = (e) => {
         if(e.target === e.currentTarget)
@@ -40,7 +46,7 @@ const Header = () => {
                 <Button variant="outline" onClick={()=> setShowSignIn(true)}>Login</Button>
             </SignedOut>
             <SignedIn>
-                {user?.unsafeMetadata?.role === "recruiter" && (
+                {isRecruiter && (
                 <Link to="/post-job">
                 <Button variant="destructive" className="rounded-full">
                 <PenBox size={20} className="mr-2" />

@@ -30,7 +30,8 @@ const schema = z.object({
   }),
   resume:z.any().refine(file=>file[0] && (
     file[0].type === "application/pdf" || 
-      file[0].type === "application/msword"
+      file[0].type === "application/msword" ||
+      file[0].type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ),{
     message: "Only PDF or Word documents are allowed"
   })
